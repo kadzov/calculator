@@ -1,5 +1,6 @@
 html {
   font-size: 20px;
+  color: white;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -8,7 +9,7 @@ html {
 }
 #calculator {
   width: fit-content;
-  border: solid;
+  border: solid black;
 }
 #display {
   width: 300px;
@@ -16,7 +17,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(194, 193, 193);
+  background-color: black;
   overflow: hidden;
 }
 #buttons {
@@ -24,26 +25,29 @@ html {
   height: 300px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  background-color: orange;
   cursor: pointer;
 }
 .button {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: solid;
-  border-right: solid;
-}
-.pressed {
-  background-color: rgb(133, 87, 1);
+  border-top: solid black;
+  border-right: solid black;
+  background-color: rgb(56, 56, 56);
+
 }
 .button:nth-child(4n) {
   border-right: none;
+}
+.operator {
+  background-color: rgb(9, 199, 199);
+}
+.pressed {
+  filter: brightness(50%)
 }
 #text {
   width: 290px;
   overflow: hidden;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
 }
