@@ -1,63 +1,79 @@
 const text = document.querySelector('#text');
 const button = document.querySelectorAll('.button');
+let firstNumber;
+let secondNumber;
+let operator;
+let newOperator;
 button.forEach(x => {
   x.addEventListener('mousedown', () => {
     x.classList.add('pressed');
   });
 });
-let firstNumber;
-let secondNumber;
-let operator;
-let newOperator;
-
 button.forEach(x => {
   x.addEventListener('click', () => {
-    if (/\d/.test(x.textContent) && firstNumber !== 0 && !firstNumber) {
-      if (secondNumber === 'new') {
-        text.textContent = '';
-        secondNumber = undefined;
-      }
-      x.classList.remove('pressed');
-      text.textContent += x.textContent;
-      if (/0\d/.test(text.textContent)) {
-        text.textContent = x.textContent;
-      }
-    } else if (['+', '-', '×', '÷'].includes(x.textContent)
-      && text.textContent && !operator) {
-      operator = x;
-      firstNumber = +text.textContent;
-    } else if (/\d/.test(x.textContent) && operator) {
-      if (firstNumber === +text.textContent) {
-        text.textContent = '';
-      }
-      if (operator.className === 'button operator pressed') {
-        operator.classList.remove('pressed');
-      }
-      x.classList.remove('pressed');
-      text.textContent += x.textContent;
-    } else if (x.textContent === '=' && operator
-      && operator.className !== 'button operator pressed') {
-      operator = operator.textContent;
-      secondNumber = +text.textContent;
-      x.classList.remove('pressed');
-      text.textContent = '';
-      newOperator = undefined;
-      operate();
-    } else if (['+', '-', '×', '÷'].includes(x.textContent)
-      && firstNumber && operator.className !== 'button operator pressed') {
-      operator = operator.textContent;
-      secondNumber = +text.textContent;
-      text.textContent = '';
-      newOperator = x;
-      operate();
-    } else if (['◄'].includes(x.textContent)) {
-      text.textContent = text.textContent.slice(0, text.textContent.length - 1);
-      x.classList.remove('pressed');
-    } else if (/./.test(x.textContent)) {
-      x.classList.remove('pressed');
-    }
+    const click = x;
+    calculator(click);
   });
 });
+// document.addEventListener('keydown', e => {
+//   const keydown = Array.from(button).find(x => x.textContent === e.key);
+//   if (keydown) {
+//     keydown.classList.add('pressed');
+//     console.log(keydown)
+//   }
+// });
+document.addEventListener('keypress', e => {
+  const keypress = Array.from(button).find(x => x.textContent === e.key);
+  if (keypress) {
+    calculator(keypress);
+  }
+});
+function calculator(x) {
+  if (/\d/.test(x.textContent) && firstNumber !== 0 && !firstNumber) {
+    if (secondNumber === 'new') {
+      text.textContent = '';
+      secondNumber = undefined;
+    }
+    x.classList.remove('pressed');
+    text.textContent += x.textContent;
+    if (/0\d/.test(text.textContent)) {
+      text.textContent = x.textContent;
+    }
+  } else if (['+', '-', '×', '÷'].includes(x.textContent)
+    && text.textContent && !operator) {
+    operator = x;
+    firstNumber = +text.textContent;
+  } else if (/\d/.test(x.textContent) && operator) {
+    if (firstNumber === +text.textContent) {
+      text.textContent = '';
+    }
+    if (operator.className === 'button operator pressed') {
+      operator.classList.remove('pressed');
+    }
+    x.classList.remove('pressed');
+    text.textContent += x.textContent;
+  } else if (x.textContent === '=' && operator
+    && operator.className !== 'button operator pressed') {
+    operator = operator.textContent;
+    secondNumber = +text.textContent;
+    x.classList.remove('pressed');
+    text.textContent = '';
+    newOperator = undefined;
+    operate();
+  } else if (['+', '-', '×', '÷'].includes(x.textContent)
+    && firstNumber && operator.className !== 'button operator pressed') {
+    operator = operator.textContent;
+    secondNumber = +text.textContent;
+    text.textContent = '';
+    newOperator = x;
+    operate();
+  } else if (['◄'].includes(x.textContent)) {
+    text.textContent = text.textContent.slice(0, text.textContent.length - 1);
+    x.classList.remove('pressed');
+  } else if (/./.test(x.textContent)) {
+    x.classList.remove('pressed');
+  }
+}
 function operate() {
   if (operator === '+') {
     text.textContent = firstNumber + secondNumber;
