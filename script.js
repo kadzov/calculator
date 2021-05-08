@@ -7,25 +7,19 @@ let newOperator;
 button.forEach(x => {
   x.addEventListener('mousedown', () => {
     x.classList.add('pressed');
+    calculator(x);
   });
 });
-button.forEach(x => {
-  x.addEventListener('click', () => {
-    const click = x;
-    calculator(click);
-  });
+document.addEventListener('keydown', e => {
+  const keydown = Array.from(button).find(x => x.id === e.key);
+  if (keydown) {
+    keydown.classList.add('pressed');
+    calculator(keydown);
+  }
 });
-// document.addEventListener('keydown', e => {
-//   const keydown = Array.from(button).find(x => x.textContent === e.key);
-//   if (keydown) {
-//     keydown.classList.add('pressed');
-//     console.log(keydown)
-//   }
-// });
-document.addEventListener('keypress', e => {
-  const keypress = Array.from(button).find(x => x.textContent === e.key);
-  if (keypress) {
-    calculator(keypress);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Backspace') {
+    text.textContent = text.textContent.slice(0, text.textContent.length - 1);
   }
 });
 function calculator(x) {
@@ -34,12 +28,12 @@ function calculator(x) {
       text.textContent = '';
       secondNumber = undefined;
     }
-    x.classList.remove('pressed');
+    setTimeout(() => x.classList.remove('pressed'), 100);
     text.textContent += x.textContent;
     if (/0\d/.test(text.textContent)) {
       text.textContent = x.textContent;
     }
-  } else if (['+', '-', '×', '÷'].includes(x.textContent)
+  } else if (['+', '-', '*', '/'].includes(x.id)
     && text.textContent && !operator) {
     operator = x;
     firstNumber = +text.textContent;
@@ -50,28 +44,28 @@ function calculator(x) {
     if (operator.className === 'button operator pressed') {
       operator.classList.remove('pressed');
     }
-    x.classList.remove('pressed');
+    setTimeout(() => x.classList.remove('pressed'), 100);
     text.textContent += x.textContent;
   } else if (x.textContent === '=' && operator
     && operator.className !== 'button operator pressed') {
-    operator = operator.textContent;
+    operator = operator.id;
     secondNumber = +text.textContent;
-    x.classList.remove('pressed');
+    setTimeout(() => x.classList.remove('pressed'), 100);
     text.textContent = '';
     newOperator = undefined;
     operate();
-  } else if (['+', '-', '×', '÷'].includes(x.textContent)
+  } else if (['+', '-', '*', '/'].includes(x.id)
     && firstNumber && operator.className !== 'button operator pressed') {
-    operator = operator.textContent;
+    operator = operator.id;
     secondNumber = +text.textContent;
     text.textContent = '';
     newOperator = x;
     operate();
-  } else if (['◄'].includes(x.textContent)) {
-    text.textContent = text.textContent.slice(0, text.textContent.length - 1);
-    x.classList.remove('pressed');
-  } else if (/./.test(x.textContent)) {
-    x.classList.remove('pressed');
+  } else if (['.'].includes(x.textContent) && !/\./.test(text.textContent)) {
+    text.textContent += '.';
+    setTimeout(() => x.classList.remove('pressed'), 100);
+  } else {
+    setTimeout(() => x.classList.remove('pressed'), 100);
   }
 }
 function operate() {
@@ -79,18 +73,16 @@ function operate() {
     text.textContent = firstNumber + secondNumber;
   } else if (operator === '-') {
     text.textContent = firstNumber - secondNumber;
-  } else if (operator === '×') {
+  } else if (operator === '*') {
     text.textContent = firstNumber * secondNumber;
-  } else if (operator === '÷') {
+  } else if (operator === '/') {
     if (secondNumber === 0) {
       secondNumber = 1;
     }
-    text.textContent = (firstNumber / secondNumber).toFixed(2);
+    text.textContent = Math.round(firstNumber / secondNumber * 100) / 100;
   }
-  if (['+', '-', '×', '÷'].includes(operator)) {
-    firstNumber = +text.textContent;
-    operator = newOperator;
-  }
+  firstNumber = +text.textContent;
+  operator = newOperator;
   if (!newOperator) {
     firstNumber = undefined;
     secondNumber = 'new';

@@ -34,7 +34,6 @@ html {
   border-top: solid black;
   border-right: solid black;
   background-color: rgb(56, 56, 56);
-
 }
 .button:nth-child(4n) {
   border-right: none;
