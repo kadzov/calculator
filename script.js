@@ -4,6 +4,7 @@ let firstNumber;
 let secondNumber;
 let operator;
 let newOperator;
+let pressed;
 button.forEach(x => {
   x.addEventListener('mousedown', () => {
     x.classList.add('pressed');
@@ -35,12 +36,14 @@ function calculator(x) {
     }
   } else if (['+', '-', '*', '/'].includes(x.id)
     && text.textContent && !operator) {
+    pressed = 'yes';
     operator = x;
     firstNumber = +text.textContent;
   } else if (/\d/.test(x.textContent) && operator) {
     if (operator.className === 'button operator pressed') {
       text.textContent = '';
       operator.classList.remove('pressed');
+      pressed = 'no';
     }
     setTimeout(() => x.classList.remove('pressed'), 100);
     text.textContent += x.textContent;
@@ -52,9 +55,9 @@ function calculator(x) {
     text.textContent = '';
     newOperator = undefined;
     operate();
-  } else if (['+', '-', '*', '/'].includes(x.id) && firstNumber
-    && operator.className !== 'button operator pressed'
-    || operator.id === x.id) {
+  } else if (['+', '-', '*', '/'].includes(x.id)
+    && pressed === 'no' && firstNumber) {
+    pressed = 'yes';
     operator = operator.id;
     secondNumber = +text.textContent;
     text.textContent = '';
