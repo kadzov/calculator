@@ -38,10 +38,8 @@ function calculator(x) {
     operator = x;
     firstNumber = +text.textContent;
   } else if (/\d/.test(x.textContent) && operator) {
-    if (firstNumber === +text.textContent) {
-      text.textContent = '';
-    }
     if (operator.className === 'button operator pressed') {
+      text.textContent = '';
       operator.classList.remove('pressed');
     }
     setTimeout(() => x.classList.remove('pressed'), 100);
@@ -54,8 +52,9 @@ function calculator(x) {
     text.textContent = '';
     newOperator = undefined;
     operate();
-  } else if (['+', '-', '*', '/'].includes(x.id)
-    && firstNumber && operator.className !== 'button operator pressed') {
+  } else if (['+', '-', '*', '/'].includes(x.id) && firstNumber
+    && operator.className !== 'button operator pressed'
+    || operator.id === x.id) {
     operator = operator.id;
     secondNumber = +text.textContent;
     text.textContent = '';
