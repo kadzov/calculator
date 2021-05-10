@@ -8,7 +8,8 @@ let pressed;
 let equalsPressed;
 button.forEach(e => {
   e.addEventListener('mousedown', () => {
-    if (e.id === '=' && equalsPressed === 1) {
+    if (e.id === '='
+      && (equalsPressed === 1 || equalsPressed === undefined)) {
       e.classList.remove('pressed');
     } else if (pressed === 'no' || !pressed || /\d/.test(e.id)) {
       e.classList.add('pressed');
@@ -18,16 +19,18 @@ button.forEach(e => {
 });
 document.addEventListener('keydown', e => {
   const keydown = Array.from(button).find(x => x.id === e.key);
-  if (keydown.id === '=' && equalsPressed === 1) {
-    keydown.classList.remove('pressed');
-  } else if (keydown &&
-    (pressed === 'no' || !pressed || /\d/.test(keydown.id))) {
-    keydown.classList.add('pressed');
-    calculator(keydown);
-  } else if (e.key === 'Backspace' && pressed !== 'yes') {
+  if (e.key === 'Backspace' && pressed !== 'yes') {
     text.textContent = text.textContent.slice(0, text.textContent.length - 1);
     if (text.textContent === '') {
       text.textContent = 0;
+    }
+  } else if (keydown) {
+    if (keydown.id === '='
+      && (equalsPressed === 1 || equalsPressed === undefined)) {
+      keydown.classList.remove('pressed');
+    } else if (pressed === 'no' || !pressed || /\d/.test(keydown.id)) {
+      keydown.classList.add('pressed');
+      calculator(keydown);
     }
   }
 });
