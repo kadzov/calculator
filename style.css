@@ -1,5 +1,5 @@
 html {
-  font-size: 20px;
+  font-size: 25px;
   color: white;
   font-weight: bold;
   display: flex;
@@ -8,7 +8,6 @@ html {
   height: 100%;
 }
 #calculator {
-  width: fit-content;
   border: solid black;
 }
 #display {
@@ -18,7 +17,12 @@ html {
   justify-content: center;
   align-items: center;
   background-color: black;
+}
+#text {
+  width: 288px;
   overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
 }
 #buttons {
   width: 300px;
@@ -33,20 +37,14 @@ html {
   align-items: center;
   border-top: solid black;
   border-right: solid black;
-  background-color: rgb(56, 56, 56);
+  background-color: #333333
 }
 .button:nth-child(4n) {
   border-right: none;
 }
 .operator {
-  background-color: rgb(9, 199, 199);
+  background-color: #00b1b8
 }
 .pressed {
   filter: brightness(50%)
-}
-#text {
-  width: 290px;
-  overflow: hidden;
-  display: flex;
-  justify-content: flex-end;
 }
