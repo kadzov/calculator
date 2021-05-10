@@ -65,7 +65,7 @@ function calculator(e) {
     equalsPressed = 1;
     operate();
   } else if (['+', '-', '*', '/'].includes(e.id)
-    && pressed === 'no' && firstNumber) {
+    && pressed === 'no' && (firstNumber || firstNumber === 0)) {
     pressed = 'yes';
     operator = operator.id;
     secondNumber = +text.textContent;
