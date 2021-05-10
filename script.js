@@ -20,7 +20,7 @@ button.forEach(e => {
 document.addEventListener('keydown', e => {
   const keydown = Array.from(button).find(x => x.id === e.key);
   if (e.key === 'Backspace' && pressed !== 'yes') {
-    text.textContent = text.textContent.slice(0, text.textContent.length - 1);
+    text.textContent = text.textContent.slice(0, -1);
     if (text.textContent === '') {
       text.textContent = 0;
     }
