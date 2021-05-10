@@ -92,9 +92,16 @@ function operate() {
     text.textContent = Math.round(firstNumber * secondNumber * 100) / 100;
   } else if (operator === '/') {
     if (secondNumber === 0) {
-      secondNumber = 1;
+      firstNumber = undefined;
+      secondNumber = undefined;
+      operator = undefined;
+      if (newOperator) {
+        setTimeout(() => newOperator.classList.remove('pressed'), 100);
+      }
+      return text.textContent = 'Can\'t divide by 0'
+    } else {
+      text.textContent = Math.round(firstNumber / secondNumber * 100) / 100;
     }
-    text.textContent = Math.round(firstNumber / secondNumber * 100) / 100;
   }
   firstNumber = +text.textContent;
   operator = newOperator;
