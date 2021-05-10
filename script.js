@@ -5,9 +5,14 @@ let secondNumber;
 let operator;
 let newOperator;
 let pressed;
+let equalsPressed;
 button.forEach(e => {
   e.addEventListener('mousedown', () => {
-    e.classList.add('pressed');
+    if (e.id === '=' && equalsPressed === 1) {
+      e.classList.remove('pressed');
+    } else if ((pressed === 'no' || !pressed || /\d/.test(e.id))) {
+      e.classList.add('pressed');
+    }
     calculator(e);
   });
 });
@@ -18,6 +23,9 @@ document.addEventListener('keydown', e => {
     calculator(keydown);
   } else if (e.key === 'Backspace' && pressed !== 'yes') {
     text.textContent = text.textContent.slice(0, text.textContent.length - 1);
+    if (text.textContent === '') {
+      text.textContent = 0;
+    }
   }
 });
 function calculator(e) {
@@ -44,12 +52,17 @@ function calculator(e) {
     }
     setTimeout(() => e.classList.remove('pressed'), 100);
     text.textContent += e.id;
+    equalsPressed = 0;
+    if (/0\d/.test(text.textContent)) {
+      text.textContent = e.id;
+    }
   } else if (e.id === '=' && operator && pressed === 'no') {
     operator = operator.id;
     secondNumber = +text.textContent;
     setTimeout(() => e.classList.remove('pressed'), 100);
     text.textContent = '';
     newOperator = undefined;
+    equalsPressed = 1;
     operate();
   } else if (['+', '-', '*', '/'].includes(e.id)
     && pressed === 'no' && firstNumber) {
@@ -59,20 +72,24 @@ function calculator(e) {
     text.textContent = '';
     newOperator = e;
     operate();
-  } else if (['.'].includes(e.id) && !/\./.test(text.textContent)) {
-    text.textContent += '.';
-    setTimeout(() => e.classList.remove('pressed'), 100);
-  } else {
+  } else if (['.'].includes(e.id) && (pressed === 'no' || !pressed)) {
+    if (secondNumber === 'new') {
+      text.textContent = '0';
+      secondNumber = undefined;
+    }
+    if (!/\./.test(text.textContent)) {
+      text.textContent += '.';
+    }
     setTimeout(() => e.classList.remove('pressed'), 100);
   }
 }
 function operate() {
   if (operator === '+') {
-    text.textContent = firstNumber + secondNumber;
+    text.textContent = Math.round((firstNumber + secondNumber) * 100) / 100;
   } else if (operator === '-') {
-    text.textContent = firstNumber - secondNumber;
+    text.textContent = Math.round((firstNumber - secondNumber) * 100) / 100;
   } else if (operator === '*') {
-    text.textContent = firstNumber * secondNumber;
+    text.textContent = Math.round(firstNumber * secondNumber * 100) / 100;
   } else if (operator === '/') {
     if (secondNumber === 0) {
       secondNumber = 1;
