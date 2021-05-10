@@ -10,15 +10,18 @@ button.forEach(e => {
   e.addEventListener('mousedown', () => {
     if (e.id === '=' && equalsPressed === 1) {
       e.classList.remove('pressed');
-    } else if ((pressed === 'no' || !pressed || /\d/.test(e.id))) {
+    } else if (pressed === 'no' || !pressed || /\d/.test(e.id)) {
       e.classList.add('pressed');
+      calculator(e);
     }
-    calculator(e);
   });
 });
 document.addEventListener('keydown', e => {
   const keydown = Array.from(button).find(x => x.id === e.key);
-  if (keydown) {
+  if (keydown.id === '=' && equalsPressed === 1) {
+    keydown.classList.remove('pressed');
+  } else if (keydown &&
+    (pressed === 'no' || !pressed || /\d/.test(keydown.id))) {
     keydown.classList.add('pressed');
     calculator(keydown);
   } else if (e.key === 'Backspace' && pressed !== 'yes') {
@@ -98,7 +101,7 @@ function operate() {
       if (newOperator) {
         setTimeout(() => newOperator.classList.remove('pressed'), 100);
       }
-      return text.textContent = 'Can\'t divide by 0'
+      return text.textContent = 'Can\'t divide by 0';
     } else {
       text.textContent = Math.round(firstNumber / secondNumber * 100) / 100;
     }
