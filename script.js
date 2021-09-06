@@ -6,10 +6,9 @@ let operator;
 let newOperator;
 let pressed;
 let equalsPressed;
-button.forEach(e => {
+button.forEach((e) => {
   e.addEventListener('mousedown', () => {
-    if (e.id === '='
-      && (equalsPressed === 1 || equalsPressed === undefined)) {
+    if (e.id === '=' && (equalsPressed === 1 || equalsPressed === undefined)) {
       e.classList.remove('pressed');
     } else if (pressed === 'no' || !pressed || /\d/.test(e.id)) {
       e.classList.add('pressed');
@@ -17,16 +16,18 @@ button.forEach(e => {
     }
   });
 });
-document.addEventListener('keydown', e => {
-  const keydown = Array.from(button).find(x => x.id === e.key);
+document.addEventListener('keydown', (e) => {
+  const keydown = Array.from(button).find((x) => x.id === e.key);
   if (e.key === 'Backspace' && pressed !== 'yes') {
     text.textContent = text.textContent.slice(0, -1);
     if (text.textContent === '') {
       text.textContent = 0;
     }
   } else if (keydown) {
-    if (keydown.id === '='
-      && (equalsPressed === 1 || equalsPressed === undefined)) {
+    if (
+      keydown.id === '=' &&
+      (equalsPressed === 1 || equalsPressed === undefined)
+    ) {
       keydown.classList.remove('pressed');
     } else if (pressed === 'no' || !pressed || /\d/.test(keydown.id)) {
       keydown.classList.add('pressed');
@@ -45,8 +46,11 @@ function calculator(e) {
     if (/0\d/.test(text.textContent)) {
       text.textContent = e.id;
     }
-  } else if (['+', '-', '*', '/'].includes(e.id)
-    && text.textContent && !operator) {
+  } else if (
+    ['+', '-', '*', '/'].includes(e.id) &&
+    text.textContent &&
+    !operator
+  ) {
     pressed = 'yes';
     operator = e;
     firstNumber = +text.textContent;
@@ -70,8 +74,11 @@ function calculator(e) {
     newOperator = undefined;
     equalsPressed = 1;
     operate();
-  } else if (['+', '-', '*', '/'].includes(e.id)
-    && pressed === 'no' && (firstNumber || firstNumber === 0)) {
+  } else if (
+    ['+', '-', '*', '/'].includes(e.id) &&
+    pressed === 'no' &&
+    (firstNumber || firstNumber === 0)
+  ) {
     pressed = 'yes';
     operator = operator.id;
     secondNumber = +text.textContent;
@@ -104,9 +111,9 @@ function operate() {
       if (newOperator) {
         setTimeout(() => newOperator.classList.remove('pressed'), 100);
       }
-      return text.textContent = 'Can\'t divide by 0';
+      return (text.textContent = "Can't divide by 0");
     } else {
-      text.textContent = Math.round(firstNumber / secondNumber * 100) / 100;
+      text.textContent = Math.round((firstNumber / secondNumber) * 100) / 100;
     }
   }
   firstNumber = +text.textContent;
